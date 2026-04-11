@@ -1,0 +1,5 @@
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+theme = Aura
+background-opacity=0.8
+background-blur=true
+keybind = shift+enter=text:\x1b\r
