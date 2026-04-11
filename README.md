@@ -12,15 +12,25 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 - [Homebrew](https://brew.sh/) (macOS) or [Linuxbrew](https://docs.brew.sh/Homebrew-on-Linux) (Linux)
 - Git
+- A terminal with a Nerd Font (see below)
+
+### Nerd Font
+
+Powerlevel10k uses Nerd Font glyphs for its icons. Two easy options:
+
+- **Use [Ghostty](https://ghostty.org/)** — it ships with JetBrains Mono Nerd Font bundled as the default font, so icons work with zero configuration.
+- **Install a Nerd Font manually** and set it as your terminal font:
+  ```bash
+  brew install --cask font-meslo-lg-nerd-font
+  ```
 
 ## Fresh Setup on a New Machine
 
-### 1. Install chezmoi and apply dotfiles
+> **Important:** The Oh My Zsh installer overwrites `~/.zshrc`, so install Oh My Zsh and Powerlevel10k **first**, then apply chezmoi last.
+
+### 1. Install required tools
 ```bash
-brew install chezmoi
-chezmoi init https://github.com/QingqiShi/dotfiles.git
-chezmoi diff  # Preview changes
-chezmoi apply
+brew install chezmoi tmux fzf thefuck direnv nvm
 ```
 
 ### 2. Install Oh My Zsh
@@ -35,14 +45,18 @@ When asked if you want to change your default shell, choose **No** if you're alr
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ```
 
-### 4. Install required tools
+### 4. Apply dotfiles with chezmoi
 ```bash
-brew install tmux fzf thefuck
+chezmoi init https://github.com/QingqiShi/dotfiles.git
+chezmoi diff   # Preview changes
+chezmoi apply
 ```
+
+This overwrites the default `~/.zshrc` that Oh My Zsh installed with the one from this repo, along with `~/.p10k.zsh`.
 
 ### 5. Reload your shell
 ```bash
-source ~/.zshrc
+exec zsh
 ```
 
 Or simply open a new terminal window.
@@ -56,9 +70,9 @@ Chezmoi is configured to automatically commit and push changes.
 chezmoi edit ~/.zshrc
 ```
 
-### Apply changes from another dotfile
+### Capture local changes back into the repo
 ```bash
-chezmoi add ~/.zshrc
+chezmoi re-add ~/.zshrc
 ```
 
 This will automatically commit and push to the repository.
@@ -91,11 +105,15 @@ The `.zshrc` is configured to work across platforms. It checks for Homebrew in:
 
 ### Missing plugins errors
 
-If you see plugin errors, ensure you've completed steps 2-4 in the setup.
+If you see plugin errors on shell startup, ensure you've completed step 1 — it installs `direnv`, `nvm`, `fzf`, `thefuck`, and `tmux`, which back the Oh My Zsh plugins enabled in `.zshrc`.
 
 ### Theme not found
 
 If Powerlevel10k theme isn't found, ensure you've run step 3 and that Oh My Zsh is installed.
+
+### Icons show as boxes (□)
+
+Your terminal font isn't a Nerd Font. See the [Nerd Font](#nerd-font) section above.
 
 ## Tools Used
 
@@ -105,3 +123,5 @@ If Powerlevel10k theme isn't found, ensure you've run step 3 and that Oh My Zsh 
 - **tmux**: Terminal multiplexer
 - **fzf**: Fuzzy finder
 - **thefuck**: Command correction tool
+- **direnv**: Per-directory environment variables
+- **nvm**: Node Version Manager
