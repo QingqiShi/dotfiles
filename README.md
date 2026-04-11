@@ -9,6 +9,8 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 - **Ghostty terminal** configuration (`.config/ghostty/config.ghostty`)
 - Cross-platform Homebrew setup (works on macOS and Linux)
 
+<img width="1045" height="627" alt="截屏2026-04-11 16 08 04" src="https://github.com/user-attachments/assets/9e955dc8-ffb6-49eb-8f4c-84b10e207fae" />
+
 ## Prerequisites
 
 - [Homebrew](https://brew.sh/) (macOS) or [Linuxbrew](https://docs.brew.sh/Homebrew-on-Linux) (Linux)
