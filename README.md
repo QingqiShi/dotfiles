@@ -64,6 +64,118 @@ exec zsh
 
 Or simply open a new terminal window.
 
+## Features
+
+Quick reference for the day-to-day features installed by these dotfiles. Forgot what something does? Start here.
+
+### Prompt — Powerlevel10k
+
+A fast, information-rich Zsh prompt showing the current directory, git branch and dirty state, exit code and duration of the previous command, and Node version (in JS projects). Two comfort features worth knowing about:
+
+- **Instant prompt** — the prompt renders from a cache before `.zshrc` finishes loading, so cold shells feel instantaneous.
+- **Transient prompt** — previous prompts collapse to a single line in scrollback so history stays tidy.
+
+Reconfigure with `p10k configure` (overwrites `~/.p10k.zsh` — remember to run `chezmoi re-add ~/.p10k.zsh` afterwards to save it back to the repo).
+
+### Fuzzy finder — fzf
+
+The single biggest productivity boost in the whole setup. Key bindings are wired up automatically via the OMZ `fzf` plugin — no extra config needed.
+
+| Shortcut | What it does |
+|---|---|
+| **Ctrl-R** | Fuzzy-search shell history (the killer feature — never `history \| grep` again) |
+| **Ctrl-T** | Fuzzy-find a file under the current directory and paste its path onto the command line |
+| **Alt-C** | Fuzzy-`cd` into a subdirectory |
+| **`**<Tab>`** | Fuzzy completion for any command: `vim **<tab>`, `cd **<tab>`, `kill **<tab>` (pid picker), `ssh **<tab>`, etc. |
+
+### Git aliases — OMZ `git` plugin
+
+The OMZ `git` plugin ships ~150 aliases. The ones worth memorizing:
+
+| Alias | Expands to |
+|---|---|
+| `gst` | `git status` |
+| `gco <branch>` | `git checkout <branch>` |
+| `gcb <branch>` | `git checkout -b <branch>` (create + switch) |
+| `gc` | `git commit -v` (opens editor) |
+| `gcmsg "msg"` | `git commit -m "msg"` |
+| `ga <file>` / `gaa` | `git add <file>` / `git add --all` |
+| `gd` / `gds` | `git diff` / `git diff --staged` |
+| `gp` / `gl` | `git push` / `git pull` |
+| `glog` | `git log --oneline --decorate --graph` |
+| `gb` / `gbd <name>` | `git branch` / `git branch -d <name>` |
+| `grb` / `grbi` | `git rebase` / `git rebase -i` |
+| `gsta` / `gstp` | `git stash` / `git stash pop` |
+
+Full list: [OMZ git plugin reference](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git).
+
+### Per-directory env vars — direnv
+
+Drop a `.envrc` file in a project root, run `direnv allow` once, and its contents auto-load when you `cd` in and auto-unload when you `cd` out. Keeps secrets out of `.zshrc` and scopes env vars to the projects that need them.
+
+```bash
+# in some-project/.envrc
+export OPENAI_API_KEY="sk-..."
+export DATABASE_URL="postgres://localhost/myapp"
+```
+
+```bash
+$ cd some-project
+direnv: loading ~/some-project/.envrc
+direnv: export +OPENAI_API_KEY +DATABASE_URL
+```
+
+### Node version management — nvm (lazy-loaded)
+
+| Command | What it does |
+|---|---|
+| `nvm install 22` | Install Node 22 |
+| `nvm use 22` | Switch the current shell to Node 22 |
+| `nvm alias default 22` | Default Node version for new shells |
+| `nvm ls` | List installed versions |
+| `nvm current` | Show active version |
+
+**Lazy-loading note:** `nvm` is not sourced when your shell starts — it's stubbed for `nvm`, `node`, `npm`, `npx`, `pnpm`, `yarn`, and `corepack`, and only actually loads the first time you call one of those. Expect a ~200-500ms one-time pause on first use in a new shell, in exchange for dramatically faster shell startup.
+
+### Command correction — thefuck
+
+Mistyped the last command? Type `fuck` and hit Enter. It reruns the previous command with the most likely fix, asking for confirmation first.
+
+```bash
+$ gti status
+zsh: command not found: gti
+$ fuck
+git status [enter/↑/↓/ctrl+c]
+```
+
+### Terminal multiplexing — tmux
+
+The OMZ `tmux` plugin adds convenience aliases:
+
+| Alias | Expands to |
+|---|---|
+| `ta` | `tmux attach` (attach to the last session) |
+| `ts <name>` | `tmux new-session -s <name>` |
+| `tl` | `tmux list-sessions` |
+| `tkss <name>` | Kill a specific session |
+
+Once inside tmux, the prefix key is `Ctrl-b`:
+
+| Keys | Action |
+|---|---|
+| `Ctrl-b c` | New window |
+| `Ctrl-b n` / `p` | Next / previous window |
+| `Ctrl-b %` / `"` | Split pane vertically / horizontally |
+| `Ctrl-b <arrow>` | Move focus between panes |
+| `Ctrl-b d` | Detach (session keeps running in the background) |
+| `Ctrl-b [` | Enter copy / scroll mode (`q` to exit) |
+
+### Ghostty
+
+- **`Ctrl+\`` (global)** — toggle the drop-down quick terminal from anywhere in macOS. Requires Accessibility permission — see [Troubleshooting](#troubleshooting).
+- **`Shift+Enter`** — in TUI apps like Claude Code, inserts a literal newline without submitting the current input.
+- **Appearance** — Aura theme, 80% opacity with background blur.
+
 ## Updating Dotfiles
 
 Chezmoi is configured to automatically commit and push changes.
@@ -122,14 +234,3 @@ Your terminal font isn't a Nerd Font. See the [Nerd Font](#nerd-font) section ab
 
 The Ghostty config registers a global (system-wide) hotkey to toggle its quick terminal. On macOS, Ghostty needs **Accessibility** permission to capture global hotkeys. On first launch after applying dotfiles, macOS should prompt you — grant permission in **System Settings → Privacy & Security → Accessibility**. If it doesn't prompt, toggle Ghostty's entry off and on again there.
 
-## Tools Used
-
-- **chezmoi**: Dotfile management
-- **Oh My Zsh**: ZSH framework
-- **Powerlevel10k**: ZSH theme
-- **tmux**: Terminal multiplexer
-- **fzf**: Fuzzy finder
-- **thefuck**: Command correction tool
-- **direnv**: Per-directory environment variables
-- **nvm**: Node Version Manager
-- **Ghostty** _(optional)_: Terminal emulator with bundled Nerd Font
