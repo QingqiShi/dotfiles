@@ -6,6 +6,7 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 - **ZSH configuration** (`.zshrc`) with Oh My Zsh
 - **Powerlevel10k theme** configuration (`.p10k.zsh`)
+- **Ghostty terminal** configuration (`.config/ghostty/config.ghostty`)
 - Cross-platform Homebrew setup (works on macOS and Linux)
 
 ## Prerequisites
@@ -18,7 +19,7 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 Powerlevel10k uses Nerd Font glyphs for its icons. Two easy options:
 
-- **Use [Ghostty](https://ghostty.org/)** — it ships with JetBrains Mono Nerd Font bundled as the default font, so icons work with zero configuration.
+- **Use [Ghostty](https://ghostty.org/)** — it ships with JetBrains Mono Nerd Font bundled as the default font, so icons work with zero configuration. This repo also tracks a Ghostty config (theme, opacity, blur, and a global quick-terminal hotkey) that `chezmoi apply` installs automatically.
 - **Install a Nerd Font manually** and set it as your terminal font:
   ```bash
   brew install --cask font-meslo-lg-nerd-font
@@ -115,6 +116,10 @@ If Powerlevel10k theme isn't found, ensure you've run step 3 and that Oh My Zsh 
 
 Your terminal font isn't a Nerd Font. See the [Nerd Font](#nerd-font) section above.
 
+### Ghostty's global Ctrl+\` hotkey does nothing
+
+The Ghostty config registers a global (system-wide) hotkey to toggle its quick terminal. On macOS, Ghostty needs **Accessibility** permission to capture global hotkeys. On first launch after applying dotfiles, macOS should prompt you — grant permission in **System Settings → Privacy & Security → Accessibility**. If it doesn't prompt, toggle Ghostty's entry off and on again there.
+
 ## Tools Used
 
 - **chezmoi**: Dotfile management
@@ -125,3 +130,4 @@ Your terminal font isn't a Nerd Font. See the [Nerd Font](#nerd-font) section ab
 - **thefuck**: Command correction tool
 - **direnv**: Per-directory environment variables
 - **nvm**: Node Version Manager
+- **Ghostty** _(optional)_: Terminal emulator with bundled Nerd Font
