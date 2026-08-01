@@ -57,7 +57,23 @@ chezmoi apply
 
 This overwrites the default `~/.zshrc` that Oh My Zsh installed with the one from this repo, along with `~/.p10k.zsh`.
 
-### 5. Reload your shell
+### 5. Clear Ghostty's other config location (macOS)
+
+On macOS, Ghostty also reads `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`, and loads it *after* `~/.config/ghostty/config.ghostty`. If a config is sitting there, it silently overrides the one this repo installs. Remove it so the tracked config wins:
+
+```bash
+rm -f ~/Library/Application\ Support/com.mitchellh.ghostty/config.ghostty
+```
+
+To confirm which settings are actually live — here or any time Ghostty ignores a change you made:
+
+```bash
+/Applications/Ghostty.app/Contents/MacOS/ghostty +show-config --default=false
+```
+
+Edit the config with `chezmoi edit ~/.config/ghostty/config.ghostty`, not through Ghostty's own `Cmd+,`, which writes to the untracked Application Support path.
+
+### 6. Reload your shell
 ```bash
 exec zsh
 ```
@@ -176,7 +192,9 @@ Once inside tmux, the prefix key is `Ctrl-b`:
 
 - **`Ctrl+\`` (global)** — toggle the drop-down quick terminal from anywhere in macOS. Requires Accessibility permission — see [Troubleshooting](#troubleshooting).
 - **`Shift+Enter`** — in TUI apps like Claude Code, inserts a literal newline without submitting the current input.
-- **Appearance** — Aura theme, 80% opacity with background blur.
+- **`Alt+Backspace`** — delete the previous word on the command line.
+- **Appearance** — Aura theme, 90% opacity with background blur.
+- **Config location** — `~/.config/ghostty/config.ghostty`. Ghostty prefers `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty` if that exists, so keep it deleted — see [step 5](#5-clear-ghosttys-other-config-location-macos).
 
 ## Updating Dotfiles
 
@@ -235,4 +253,14 @@ Your terminal font isn't a Nerd Font. See the [Nerd Font](#nerd-font) section ab
 ### Ghostty's global Ctrl+\` hotkey does nothing
 
 The Ghostty config registers a global (system-wide) hotkey to toggle its quick terminal. On macOS, Ghostty needs **Accessibility** permission to capture global hotkeys. On first launch after applying dotfiles, macOS should prompt you — grant permission in **System Settings → Privacy & Security → Accessibility**. If it doesn't prompt, toggle Ghostty's entry off and on again there.
+
+### Ghostty ignores the config in this repo
+
+Print what Ghostty actually loaded:
+
+```bash
+/Applications/Ghostty.app/Contents/MacOS/ghostty +show-config --default=false
+```
+
+If the values don't match `~/.config/ghostty/config.ghostty`, a second config is winning at `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`. Delete it — see [step 5](#5-clear-ghosttys-other-config-location-macos). A running Ghostty keeps its old config in memory, so reload with `Cmd+Shift+,` or restart it afterwards.
 
