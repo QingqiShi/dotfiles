@@ -137,6 +137,8 @@ direnv: export +OPENAI_API_KEY +DATABASE_URL
 
 **Lazy-loading note:** `nvm` is not sourced when your shell starts — it's stubbed for `nvm`, `node`, `npm`, `npx`, `pnpm`, `yarn`, and `corepack`, and only actually loads the first time you call one of those. Expect a ~200-500ms one-time pause on first use in a new shell, in exchange for dramatically faster shell startup.
 
+**Auto-switching:** `cd` into a directory containing an `.nvmrc` and the shell switches to that Node version automatically, reverting to your default on the way out. Projects pinned to an older Node "just work" without a manual `nvm use`; install the version once with `nvm install` if it's missing.
+
 ### Command correction — thefuck
 
 Mistyped the last command? Type `fuck` and hit Enter. It reruns the previous command with the most likely fix, asking for confirmation first.
